@@ -8,14 +8,6 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 import os
 import sys
 
-# Adjust the system path to import modules from the project root and Models directory
-script_dir = os.path.dirname(__file__)
-project_root = os.path.abspath(os.path.join(script_dir)) # Assuming this script is in the root
-models_dir = os.path.join(project_root, 'Models')
-
-sys.path.insert(0, project_root)
-sys.path.insert(0, models_dir)
-
 try:
     # Import data loading
     from Datasets.amazon_dataset import load_amazon_reviews
@@ -27,7 +19,7 @@ try:
 except ImportError as e:
     print(f"Error importing custom modules: {e}")
     print("Please ensure 'amazon_dataset.py' is in the project root.")
-    print("Please ensure 'Models' directory contains 'sentiment_classifier.py' and 'sentiment_trainer_function.py'.")
+    print("Please ensure 'Models' directory contains 'tfidf_vecotrization.py' and 'transformer.py'.")
     sys.exit("Required modules not found. Please check file paths and names.")
 
 
