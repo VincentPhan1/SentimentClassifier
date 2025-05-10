@@ -26,6 +26,7 @@ def load_amazon_reviews() -> Tuple[pd.Series, pd.Series]:
     print("Downloading Amazon Fine Food Reviews dataset from Kaggle...")
     try:
         # Download the latest version of the dataset
+        cache_root_path = "/data/amazon"
         download_path = kagglehub.dataset_download("snap/amazon-fine-food-reviews")
         print(f"Dataset downloaded to: {download_path}")
 
@@ -76,7 +77,6 @@ def load_amazon_reviews() -> Tuple[pd.Series, pd.Series]:
     except Exception as e:
         print(f"An error occurred: {e}")
         print("Please ensure you have the 'kagglehub' and 'pandas' libraries installed (`pip install kagglehub pandas`).")
-        print("Also, ensure you have the Kaggle API configured correctly if necessary.")
         raise # Re-raise the exception after printing the message
 
 
