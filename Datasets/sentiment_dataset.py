@@ -24,13 +24,10 @@ def load_sentiment_tweets() -> Tuple[pd.Series, pd.Series]:
             Y - The binary sentiment labels (0 for negative, 1 for positive).
     """
     dataset_identifier = "kazanova/sentiment140"
-    csv_file_name = 'training.1600000.processed.noemoticon.csv'  # Common file name for Sentiment140
+    csv_file_name = 'training.1600000.processed.noemoticon.csv'
 
     print(f"Downloading dataset '{dataset_identifier}' from Kaggle...")
     try:
-        # Download the latest version of the dataset
-        # No need to set cache_root_path manually unless you have a specific requirement,
-        # kagglehub handles caching.
         download_path = kagglehub.dataset_download(dataset_identifier)
         print(f"Dataset downloaded to: {download_path}")
 
@@ -49,10 +46,7 @@ def load_sentiment_tweets() -> Tuple[pd.Series, pd.Series]:
             print(f"Using largest CSV file found: '{csv_files[0]}'")
 
         print(f"Loading data from {csv_file_path}...")
-        # Load the dataset - it does NOT have a header row
-        # Specify column names based on your description
         column_names = ['polarity', 'id', 'date', 'query', 'user', 'text']
-        # Use 'latin-1' encoding as this dataset is known to have encoding issues with utf-8
         df = pd.read_csv(csv_file_path, encoding='latin-1', header=None)
         df.columns = column_names
 
@@ -62,13 +56,11 @@ def load_sentiment_tweets() -> Tuple[pd.Series, pd.Series]:
         print(f"Original dataset shape: {df.shape}")
 
         # Filter out neutral tweets (polarity == 2)
-        df_filtered = df[df['polarity'] != 2].copy()  # Use .copy() to avoid SettingWithCopyWarning
+        df_filtered = df[df['polarity'] != 2].copy()
         print(f"Shape after filtering out neutral tweets (polarity=2): {df_filtered.shape}")
 
         # Map polarity to binary sentiment: 0 -> 0 (negative); 4 -> 1 (positive)
-        # Ensure the polarity column is numeric (it should be, but coerce just in case)
         df_filtered['polarity'] = pd.to_numeric(df_filtered['polarity'], errors='coerce')
-        # Drop rows where polarity couldn't be converted to numeric (should be none after initial dropna, but safe)
         df_filtered.dropna(subset=['polarity'], inplace=True)
 
         # Map 4 to 1, and 0 remains 0 after filtering out 2
